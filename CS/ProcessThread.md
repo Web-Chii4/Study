@@ -260,13 +260,17 @@ public class Main {
 
 **실행 후 Java.exe프로세스**
 
-![Image](https://github.com/user-attachments/assets/a3888e73-02b5-480d-97cb-c61415273c2f)
+![Image](https://github.com/user-attachments/assets/4e643758-7030-484f-868e-16d38ec147fc)
 
 IntelliJ를 통해 java.exe 실행 파일을 실행하면서 프로세스로 하나 생성된다.
 
 위의 java.exe는 IntelliJ를 동작하기 위한 실행 파일이고, 아래의 java.exe는 작성한 코드를 동작하기 위한 실행 파일이다.
 
-현재 싱글 스레드 프로그램의 스레드는 38개이다.
+현재 싱글 스레드 프로그램의 스레드는 37개이다.
+
+**참고)**
+
+현재 스레드가 37개인 이유는 **GC, Main, JIT(Just In Time컴파일러), JVM내부 스레드 등이 동작하기 때문**
 
 **참고)**
 
@@ -275,6 +279,14 @@ IntelliJ를 통해 java.exe 실행 파일을 실행하면서 프로세스로 하
 ### 멀티 스레드 동작
 
 ```java
+class MyThread extends Thread{
+    public MyThread(){}
+    @Override
+    public void run() {
+        while(true){
+            System.out.println("thread");}
+    }
+}
 public class Main {
     public static void main(String[] args) {
         MyThread myThread = new MyThread();
@@ -286,21 +298,10 @@ public class Main {
 }
 ```
 
-```java
-public class MyThread extends Thread{
-    public MyThread(){}
-    @Override
-    public void run() {
-        while(true){
-            System.out.println("thread");}
-    }
-}
-```
-
 **실행 후**
 
-![Image](https://github.com/user-attachments/assets/0ecae892-6aab-4b93-a671-d87dd25ada98)
+![Image](https://github.com/user-attachments/assets/a63a2702-af71-4b1d-a9d9-2787ca5271aa)
 
-싱글 스레드로 동작했을 때 스레드의 갯수를 비교해보면, 37개로 총 1개 늘어난 것을 볼 수 있다.
+싱글 스레드로 동작했을 때 스레드의 갯수를 비교해보면, 38개로 총 1개 늘어난 것을 볼 수 있다.
 
-결국, java 실행 파일이 실행되고, 메모리에 적재되면서 하나의 프로세스로 `java.exe` 가 생성된 것이다. 해당 프로세스에는 총 37개의 스레드(실행 흐름)가 동작하는 것이다.
+결국, java 실행 파일이 실행되고, 메모리에 적재되면서 하나의 프로세스로 `java.exe` 가 생성된 것이다. 해당 프로세스에는 총 38개의 스레드(실행 흐름)가 동작하는 것이다.
